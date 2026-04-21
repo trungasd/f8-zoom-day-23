@@ -103,7 +103,6 @@ todoForm.onsubmit = function (event) {
   const formData = Object.fromEntries(new FormData(todoForm));
 
   const titleNew = formData.title.toLowerCase().trim();
-
   //Kiểm tra xem tiêu đề đã tồn tại chưa
   const isLikeWord = todoTasks.some((task, index) => {
     if (editIndex !== null && index == editIndex) return false;
