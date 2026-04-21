@@ -72,13 +72,13 @@ function closeFormModal() {
 
   const formTitle = formModal.querySelector(".modal-title");
   if (formTitle) {
-    formTitle.textContent = formTitle.dataset.original;
+    formTitle.textContent = formTitle.dataset.original || formTitle.textContent;
     delete formTitle.dataset.original;
   }
 
   const btnSubmit = formModal.querySelector(".btn-submit");
   if (btnSubmit) {
-    btnSubmit.textContent = btnSubmit.dataset.original;
+    btnSubmit.textContent = btnSubmit.dataset.original || btnSubmit.textContent;
     delete btnSubmit.dataset.original;
   }
 
@@ -103,6 +103,7 @@ todoForm.onsubmit = function (event) {
   const formData = Object.fromEntries(new FormData(todoForm));
 
   const titleNew = formData.title.toLowerCase().trim();
+
   //Kiểm tra xem tiêu đề đã tồn tại chưa
   const isLikeWord = todoTasks.some((task, index) => {
     if (editIndex !== null && index == editIndex) return false;
