@@ -72,12 +72,14 @@ function closeFormModal() {
 
   const formTitle = formModal.querySelector(".modal-title");
   if (formTitle) {
-    formTitle.textContent = formTitle.dataset.original;
+    formTitle.textContent = formTitle.dataset.original || formTitle.textContent;
+    delete formTitle.dataset.original;
   }
 
   const btnSubmit = formModal.querySelector(".btn-submit");
   if (btnSubmit) {
-    btnSubmit.textContent = btnSubmit.dataset.original;
+    btnSubmit.textContent = btnSubmit.dataset.original || btnSubmit.textContent;
+    delete btnSubmit.dataset.original;
   }
 
   todoForm.reset();
