@@ -25,28 +25,37 @@ tabBtns.forEach((btn) => {
 
 //Xử lý render theo tab
 function renderByTab() {
-  let tasks = todoTasks;
-
-  if (currentTab === "completed") {
-    tasks = tasks.filter((task) => task.isCompleted);
-  } else {
-    tasks = tasks.filter((task) => !task.isCompleted);
-  }
-
+  const tasks = getFilteredTasks();
   renderTasks(tasks);
 }
 
 //Tìm kiếm Task
 searchInput.oninput = function (event) {
-  let tasks = todoTasks;
   const searchValue = event.target.value.toLowerCase().trim();
 
+  // Nếu có search → chuyển về tab ALL
+  if (searchValue) {
+    currentTab = "all";
+    tabBtns.forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.type === "all");
+    });
+  }
+
+  const tasks = getFilteredTasks(searchValue);
+  renderTasks(tasks, searchValue);
+};
+
+function getFilteredTasks(searchValue = "") {
+  let tasks = [...todoTasks];
+
+  // Lọc theo tab
   if (currentTab === "completed") {
     tasks = tasks.filter((task) => task.isCompleted);
-  } else {
+  } else if (currentTab === "active") {
     tasks = tasks.filter((task) => !task.isCompleted);
   }
 
+  // Lọc theo search
   if (searchValue) {
     tasks = tasks.filter(
       (task) =>
@@ -55,8 +64,8 @@ searchInput.oninput = function (event) {
     );
   }
 
-  renderTasks(tasks);
-};
+  return tasks;
+}
 
 //Xử lý mở form
 function openFormModal() {
@@ -192,9 +201,11 @@ todoList.onclick = function (event) {
 };
 
 //Render dữ liệu ra màn hình
-function renderTasks(tasks = todoTasks) {
+function renderTasks(tasks = todoTasks, searchQuery = "") {
   if (!tasks.length) {
-    todoList.innerHTML = "<p>Không có công việc nào</p>";
+    todoList.innerHTML = searchQuery
+      ? "<p>Không tìm thấy task phù hợp</p>"
+      : "<p>Không có công việc nào</p>";
     return;
   }
 
@@ -234,4 +245,4 @@ function renderTasks(tasks = todoTasks) {
   todoList.innerHTML = html;
 }
 
-renderByTab();
+renderTasks();
